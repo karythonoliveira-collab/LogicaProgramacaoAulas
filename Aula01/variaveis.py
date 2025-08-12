@@ -1,13 +1,9 @@
 # comentario de linha
-'''
+
 print("Olá mundo, esse é o meu \nprimeiro script em \npython")
 print(30*"-","Concatenando texto",30*"-")
 # comentario de linha
 print('Essa é a segunda linha do meu codigo')
-
-
-comentario de bloco
-comentario de bloco
 
 
 nome = "karython Gomes"
@@ -113,7 +109,7 @@ n1 = 10
 n2 = 20
 
 print("A soma é:", n1+n2, type(n1), float(n2))
-'''
+
 saudacao = input('Digite seu nome: ')
 cpf = input('Digite seu CPF: ')
 telefone = input("Digite seu telefone: ")

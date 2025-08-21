@@ -1,0 +1,1 @@
+ola mundo, esse é um texto usando o algoritmo de manipulação de arquivos, esse texto ira aparecer em um arquivo txt, caso exista, vou sobrescrever.

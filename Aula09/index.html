@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Questionário - Programação em Python</title>
+<link rel="icon" href="./teste.png" type="image/png">
+
+
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+      background: #f4f4f9;
+    }
+
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: #fff;
+      padding: 80px;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    h1, h2 {
+      text-align: center;
+    }
+    .question {
+      margin-bottom: 20px;
+    }
+    .options label {
+      display: block;
+      padding: 8px;
+      margin: 6px 0;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .options input {
+      margin-right: 15px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 12px 20px;
+      border: none;
+      background: #007bff;
+      color: #fff;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    .btn-success {
+      background: #28a745;
+    }
+    .btn-success:hover {
+      background: #1e7e34;
+    }
+    .btn-danger {
+      background: #dc3545;
+    }
+    .btn-danger:hover {
+      background: #c82333;
+    }
+    .progress {
+      height: 20px;
+      background: #ddd;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: #28a745;
+      transition: width 0.3s;
+    }
+    .hidden {
+      display: none;
+    }
+    .result {
+      text-align: center;
+      padding: 20px;
+    }
+    .gabarito {
+      margin-top: 20px;
+      text-align: left;
+    }
+    .gabarito-item {
+      margin-bottom: 15px;
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+    }
+    .correct {
+      background-color: #d4edda;
+      border-color: #c3e6cb;
+    }
+    .incorrect {
+      background-color: #f8d7da;
+      border-color: #f5c6cb;
+    }
+    .question-text {
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .your-answer {
+      color: #dc3545;
+      font-weight: bold;
+    }
+    .correct-answer {
+      color: #28a745;
+      font-weight: bold;
+    }
+    .answer-match {
+      color: #28a745;
+      font-weight: bold;
+    }
+    .final-message {
+      background: #d4edda;
+      border: 1px solid #c3e6cb;
+      border-radius: 8px;
+      padding: 20px;
+      margin-top: 20px;
+      text-align: center;
+      font-size: 18px;
+      color: #155724;
+    }
+    .button-group {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    footer {
+
+  color: #150f0f;
+  text-align: center;
+  padding: 20px;
+  font-size: 14px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}
+
+footer a {
+  color: #596970; /* azul suave */
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+footer a:hover {
+  color: #81d4fa; /* tom mais claro ao passar o mouse */
+}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Questionário - Programação em Python</h1>
+    <div id="start">
+      <h2>Digite seu nome para começar</h2>
+      <input type="text" id="studentName" placeholder="Seu nome" style="width:100%;padding:10px;font-size:16px;">
+      <button onclick="startQuiz()">Iniciar</button>
+    </div>
+
+    <div id="quiz" class="hidden">
+      <div class="progress">
+        <div class="progress-bar" id="progressBar"></div>
+      </div>
+      <div id="questionContainer"></div>
+      <button id="nextBtn" onclick="nextQuestion()">Próxima</button>
+    </div>
+
+    <div id="result" class="hidden">
+      <h2>Resultado Final</h2>
+      <div class="result">
+        <p id="score"></p>
+        <div class="button-group">
+          <button onclick="showGabarito()">Ver Gabarito Detalhado</button>
+          <button class="btn-success" onclick="finishAndExit()">Finalizar</button>
+        </div>
+      </div>
+      <div class="gabarito hidden" id="gabarito"></div>
+      <div class="hidden" id="finalMessage">
+        <div class="final-message">
+          <h3>✅ Questionário Finalizado com Sucesso!</h3>
+          <p>Suas respostas foram salvas e enviadas. Obrigado por participar!</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+      <footer> Todos os Direitos reservados © Desenvolvido por <a href="https://karythongomes.com.br"><strong>GomesTechnology</strong></a></footer>
+
+<script>
+const questions = [
+  {q:"Em Python, qual função é usada para exibir algo na tela?", options:["echo()","print()","show()","display()"], answer:1},
+  {q:"Qual estrutura é usada para repetir um bloco de código enquanto uma condição é verdadeira?", options:["if","for","while","def"], answer:2},
+  {q:"O que significa JSON?", options:["Java Standard Output Notation","JavaScript Object Notation","Java Syntax Open Network","Java Simple Object Node"], answer:1},
+  {q:"Em Python, qual operador é usado para comparação de igualdade?", options:["=","==",":=","!="], answer:1},
+  {q:"Qual das opções representa uma lista em Python?", options:["{1,2,3}","[1,2,3]","(1,2,3)","<1,2,3>"], answer:1},
+  {q:"Qual função converte uma string em inteiro?", options:["str()","float()","int()","input()"], answer:2},
+  {q:"Em Python, o comando `elif` é usado para:", options:["Finalizar um programa","Repetir código","Verificar múltiplas condições","Criar listas"], answer:2},
+  {q:"O que representa `None` em Python?", options:["Um número zero","Um valor indefinido","Um erro de sintaxe","Uma string vazia"], answer:1},
+  {q:"Qual símbolo é usado para comentários em Python?", options:["//","#","--","/* */"], answer:1},
+  {q:"Qual método é usado para adicionar um item ao final de uma lista?", options:["add()","insert()","append()","push()"], answer:2},
+  {q:"Em JSON, os dados são representados em formato:", options:["Tabelas","Objetos com pares chave-valor","Matrizes","Texto sem formatação"], answer:1},
+  {q:"Qual dos seguintes é um tipo de dado imutável em Python?", options:["lista","dicionário","tupla","conjunto"], answer:2},
+  {q:"Qual comando encerra um loop imediatamente?", options:["stop","end","break","quit"], answer:2},
+  {q:"Qual função é usada para saber o tamanho de uma lista?", options:["size()","length()","count()","len()"], answer:3},
+  {q:"Em Python, `input()` sempre retorna:", options:["int","float","string","boolean"], answer:2},
+  {q:"O que faz o operador `%` em Python?", options:["Calcula potência","Calcula resto da divisão","Faz multiplicação","Retorna porcentagem"], answer:1},
+  {q:"Como se declara uma função em Python?", options:["function minhaFunc()","def minhaFunc():","func minhaFunc()","declare minhaFunc()"], answer:1},
+  {q:"Qual é o índice inicial de uma lista em Python?", options:["-1","0","1","Nenhum"], answer:1},
+  {q:"O que é POO em Python?", options:["Python Only Operators","Programação Orientada a Objetos","Programa de Otimização Online","Projeto de Operações Ordenadas"], answer:1},
+  {q:"Qual é a forma correta de importar um módulo em Python?", options:["include math","require math","import math","use math"], answer:2},
+  {q:"Qual método é usado para remover um item específico de uma lista em Python?", options:["delete()","remove()","pop()","clear()"], answer:1},
+  {q:"O que significa CRUD em sistemas?", options:["Create, Read, Update, Delete","Copy, Run, Update, Drop","Control, Run, Use, Deploy","Create, Run, Upload, Delete"], answer:0},
+  {q:"Qual função em Python converte para string?", options:["str()","string()","convert()","toString()"], answer:0},
+  {q:"Em um dicionário Python, como acessamos o valor da chave 'nome'?", options:["dicionario.nome","dicionario->nome","dicionario['nome']","dicionario(none)"], answer:2},
+  {q:"O que o comando `continue` faz dentro de um loop?", options:["Encerra o programa","Pula a iteração atual","Encerra o loop","Reinicia o programa"], answer:1},
+  {q:"Em Python, qual método de string converte todos os caracteres para maiúsculas?", options:["upper()","capitalize()","title()","toUpper()"], answer:0},
+  {q:"Qual biblioteca padrão do Python é usada para trabalhar com JSON?", options:["json","pyjson","dictjson","jscript"], answer:0},
+  {q:"O que significa a instrução `pass` em Python?", options:["Finalizar programa","Ignorar e continuar","Criar variável","Pausar execução"], answer:1},
+  {q:"Qual comando em Git é usado para enviar código ao repositório remoto?", options:["git upload","git push","git send","git commit"], answer:1},
+  {q:"Qual é a extensão padrão de arquivos Python?", options:[".js",".java",".py",".pyt"], answer:2}
+];
+
+let current = 0;
+let score = 0;
+let answers = [];
+let studentName = "";
+
+function startQuiz(){
+  const name = document.getElementById("studentName").value;
+  if(name.trim()===""){alert("Digite seu nome!"); return;}
+  studentName = name.trim();
+  document.getElementById("start").classList.add("hidden");
+  document.getElementById("quiz").classList.remove("hidden");
+  showQuestion();
+}
+
+function showQuestion(){
+  const q = questions[current];
+  const container = document.getElementById("questionContainer");
+  container.innerHTML = `
+    <div class="question"><h2>${current+1}. ${q.q}</h2></div>
+    <div class="options">
+      ${q.options.map((opt,i)=>`
+        <label><input type="radio" name="option" value="${i}"> ${opt}</label>
+      `).join("")}
+    </div>
+  `;
+  updateProgress();
+}
+
+function nextQuestion(){
+  const selected = document.querySelector("input[name='option']:checked");
+  if(!selected){alert("Escolha uma opção!"); return;}
+  const value = parseInt(selected.value);
+  answers.push(value);
+  if(value===questions[current].answer){score++;}
+  current++;
+  if(current<questions.length){
+    showQuestion();
+  } else {
+    finishQuiz();
+  }
+}
+
+function updateProgress(){
+  const percent = ((current)/questions.length)*100;
+  document.getElementById("progressBar").style.width = percent+"%";
+}
+
+function finishQuiz(){
+  document.getElementById("quiz").classList.add("hidden");
+  document.getElementById("result").classList.remove("hidden");
+  document.getElementById("score").innerHTML = `
+    <h3>Parabéns, ${studentName}!</h3>
+    <p style="font-size: 18px;">Você acertou <strong>${score}</strong> de <strong>${questions.length}</strong> questões.</p>
+    <p style="font-size: 20px; color: #007bff;"><strong>Nota: ${score}/${questions.length}</strong></p>
+  `;
+  
+  // Preparar dados detalhados para SheetMonkey
+  const detailedAnswers = questions.map((q, i) => ({
+    questao: i + 1,
+    pergunta: q.q,
+    resposta_aluno: q.options[answers[i]] || "Não respondida",
+    resposta_correta: q.options[q.answer],
+    acertou: answers[i] === q.answer ? "Sim" : "Não"
+  }));
+  
+  const data = {
+    Nome: studentName,
+    Nota: score,
+    Total_Questoes: questions.length,
+    Percentual: Math.round((score / questions.length) * 100),
+    Data_Hora: new Date().toLocaleString('pt-BR'),
+    Respostas_Detalhadas: JSON.stringify(detailedAnswers)
+  };
+  
+  // Enviar para SheetMonkey
+  fetch("https://api.sheetmonkey.io/form/ueZ4zqH2YYMQVtxveifx1L", {
+    method:"POST",
+    headers:{"Content-Type":"application/json"},
+    body: JSON.stringify(data)
+  }).catch(error => console.log('Erro ao enviar dados:', error));
+}
+
+function showGabarito(){
+  const gab = document.getElementById("gabarito");
+  gab.classList.remove("hidden");
+  
+  let gabaritoHTML = "<h3>📋 Gabarito Detalhado</h3>";
+  
+  questions.forEach((q, i) => {
+    const userAnswer = answers[i];
+    const correctAnswer = q.answer;
+    const isCorrect = userAnswer === correctAnswer;
+    
+    gabaritoHTML += `
+      <div class="gabarito-item ${isCorrect ? 'correct' : 'incorrect'}">
+        <div class="question-text">${i + 1}. ${q.q}</div>
+        <div style="margin-top: 10px;">
+          <div class="${isCorrect ? 'answer-match' : 'your-answer'}">
+            🔸 Sua resposta: ${q.options[userAnswer] || "Não respondida"}
+          </div>
+          ${!isCorrect ? `<div class="correct-answer">✅ Resposta correta: ${q.options[correctAnswer]}</div>` : '<div class="correct-answer">✅ Parabéns! Você acertou!</div>'}
+        </div>
+      </div>
+    `;
+  });
+  
+  gab.innerHTML = gabaritoHTML;
+}
+
+function finishAndExit(){
+  // Esconder botões e mostrar mensagem final
+  document.querySelector('.button-group').style.display = 'none';
+  document.getElementById('gabarito').classList.add('hidden');
+  document.getElementById('finalMessage').classList.remove('hidden');
+  
+  // Opcional: rolar para a mensagem final
+  document.getElementById('finalMessage').scrollIntoView({ behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
